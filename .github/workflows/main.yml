@@ -1,47 +1,22 @@
-- name: Create Release
-  # You may pin to the exact commit or the version.
-  # uses: ncipollo/release-action@880be3d0a71bc0fa98db60201d2cbdc27324f547
-  uses: ncipollo/release-action@v1.8.6
-  with:
-    # An optional flag which indicates if we should update a release if it already exists. Defaults to false.
-    allowUpdates: # optional, default is 
-    # An optional flag which indicates if artifact read or upload errors should fail the build.
-    artifactErrorsFailBuild: # optional, default is 
-    # An optional set of paths representing artifacts to upload to the release. This may be a single path or a comma delimited list of paths (or globs)
-    artifact: # optional, default is 
-    # An optional set of paths representing artifacts to upload to the release. This may be a single path or a comma delimited list of paths (or globs)
-    artifacts: # optional, default is 
-    # The content type of the artifact. Defaults to raw
-    artifactContentType: # optional, default is 
-    # An optional body for the release.
-    body: # optional, default is 
-    # An optional body file for the release. This should be the path to the file
-    bodyFile: # optional, default is 
-    # An optional commit reference. This will be used to create the tag if it does not exist.
-    commit: # optional, default is 
-    # When provided this will generate a discussion of the specified category. The category must exist otherwise this will cause the action to fail. This isn't used with draft releases
-    discussionCategory: # optional, default is 
-    # Optionally marks this release as a draft release. Set to true to enable.
-    draft: # optional, default is 
-    # An optional name for the release. If this is omitted the tag will be used.
-    name: # optional, default is 
-    # Indicates if the release body should be omitted.
-    omitBody: # optional, default is false
-    # Indicates if the release body should be omitted during updates. The body will still be applied for newly created releases. This will preserve the existing body during updates.
-    omitBodyDuringUpdate: # optional, default is false
-    # Indicates if the release name should be omitted.
-    omitName: # optional, default is false
-    # Indicates if the release name should be omitted during updates. The name will still be applied for newly created releases. This will preserve the existing name during updates.
-    omitNameDuringUpdate: # optional, default is false
-    # Optionally specify the owner of the repo where the release should be generated. Defaults to current repo's owner.
-    owner: # optional, default is 
-    # Optionally marks this release as prerelease. Set to true to enable.
-    prerelease: # optional, default is 
-    # Indicates if existing release artifacts should be replaced. Defaults to true.
-    replacesArtifacts: # optional, default is true
-    # Optionally specify the repo where the release should be generated. Defaults to current repo
-    repo: # optional, default is 
-    # An optional tag for the release. If this is omitted the git ref will be used (if it is a tag).
-    tag: # optional, default is 
-    # The Github token.
-    token: # default is 
+name: PyInstaller
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+    - name: build with pyinstaller
+      run: |
+        pyinstaller arbeitszeit.py
